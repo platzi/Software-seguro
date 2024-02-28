@@ -1,5 +1,7 @@
 package models
 
+const REGION = "us-east-2"
+
 type GitHubWebhook struct {
 	Repository Repository `json:"repository"`
 	HeadCommit Commit     `json:"head_commit"`
