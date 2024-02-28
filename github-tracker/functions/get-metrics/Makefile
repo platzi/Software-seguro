@@ -1,4 +1,4 @@
-BUCKET_NAME=camileniss-lambda-platzi
+BUCKET_NAME=camilaleniss-lambda-platzi
 BUILD_NAME=get-metrics.zip
 build:
 	GOOS=linux GOARCH=amd64 go build -o bootstrap main.go

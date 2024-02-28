@@ -39,16 +39,12 @@ func TestInsert(t *testing.T) {
 	}
 
 	body, err := json.Marshal(webhook)
-	if err != nil {
-		c.NoError(err)
-	}
-
-	ctx := context.Background()
-
-	m := mock.Mock{}
-	mockCommitRepo := repository.MockCommit{Mock: &m}
+	c.NoError(err)
 
 	createdTime := time.Now()
+
+	m := mock.Mock{}
+	mockCommit := repository.MockCommit{Mock: &m}
 
 	commit := entity.Commit{
 		RepoName:       webhook.Repository.FullName,
@@ -61,9 +57,11 @@ func TestInsert(t *testing.T) {
 		UpdatedAt:      createdTime,
 	}
 
-	mockCommitRepo.On("Insert", ctx, &commit).Return(nil)
+	ctx := context.Background()
 
-	err = insertGitHubWebhook(ctx, mockCommitRepo, webhook, string(body), createdTime)
+	mockCommit.On("Insert", ctx, &commit).Return(nil)
+
+	err = insertGitHubWebhook(ctx, mockCommit, webhook, string(body), createdTime)
 	c.NoError(err)
 
 	m.AssertExpectations(t)
