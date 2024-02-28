@@ -20,7 +20,11 @@ resource "aws_lambda_function" "get_metrics" {
 
   environment {
     variables = {
-      DEMO = "DEMO"
+      DB_HOST     = "platzi-course.c9sqmwee2hyj.us-east-2.rds.amazonaws.com" # Update with current db host
+      DB_PORT     = "5432"
+      DB_USER     = "platzi"
+      DB_PASSWORD = "rds!db-e4e77491-2a21-4121-9788-59fdbbe7f38c" # Update with secret name
+      DB_NAME     = "postgres"
     }
   }
 }
