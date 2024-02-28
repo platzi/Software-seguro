@@ -30,6 +30,11 @@ resource "aws_iam_role_policy_attachment" "can_log" {
   policy_arn = var.log_policy_arn
 }
 
+resource "aws_iam_role_policy_attachment" "can_manage_network_interfaces" {
+  role       = aws_iam_role.repo_collector.name
+  policy_arn = var.can_manage_network_policy_arn
+}
+
 output "repo_collector_role_arn" {
   value = aws_iam_role.repo_collector.arn
 }

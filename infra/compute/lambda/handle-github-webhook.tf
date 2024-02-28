@@ -13,6 +13,11 @@ resource "aws_lambda_function" "handle_github_webhook" {
   role             = var.repo_collector_role_arn
   source_code_hash = data.aws_s3_object.handle_github_webhook.version_id
 
+  vpc_config {
+    security_group_ids = var.security_groups_ids
+    subnet_ids          = var.subnet_ids
+  }
+
   environment {
     variables = {
       DEMO = "DEMO"

@@ -5,3 +5,7 @@ variable "lambda_bucket" {
 variable "repo_collector_role_arn" {
   type = string
 }
+
+variable "subnet_ids" {
+  type = list(string)
+}
