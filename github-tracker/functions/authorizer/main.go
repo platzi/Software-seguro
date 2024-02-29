@@ -41,10 +41,26 @@ func handler(event events.APIGatewayV2CustomAuthorizerV2Request) (events.APIGate
 func verifyToken(authToken string, route string) (events.APIGatewayCustomAuthorizerResponse, error) {
 	_, err := jose.ParseSigned(authToken)
 	if err != nil {
-		return denyRequest("invalid auth0 token")
+		return denyRequest(fmt.Sprintf("invalid auth0 token %s", err.Error()))
 	}
 
 	return allowRequest(route)
+}
+
+func allowRequest(route string) (events.APIGatewayCustomAuthorizerResponse, error) {
+	return events.APIGatewayCustomAuthorizerResponse{
+		PrincipalID: "user",
+		PolicyDocument: events.APIGatewayCustomAuthorizerPolicy{
+			Version: "2012-10-17",
+			Statement: []events.IAMPolicyStatement{
+				{
+					Effect:   "Allow",
+					Action:   []string{"execute-api:Invoke"},
+					Resource: []string{route},
+				},
+			},
+		},
+	}, nil
 }
 
 func denyRequest(reason string) (events.APIGatewayCustomAuthorizerResponse, error) {
@@ -63,22 +79,6 @@ func denyRequest(reason string) (events.APIGatewayCustomAuthorizerResponse, erro
 			},
 		},
 	}, fmt.Errorf(reason)
-}
-
-func allowRequest(route string) (events.APIGatewayCustomAuthorizerResponse, error) {
-	return events.APIGatewayCustomAuthorizerResponse{
-		PrincipalID: "user",
-		PolicyDocument: events.APIGatewayCustomAuthorizerPolicy{
-			Version: "2012-10-17",
-			Statement: []events.IAMPolicyStatement{
-				{
-					Effect:   "Allow",
-					Action:   []string{"execute-api:Invoke"},
-					Resource: []string{route},
-				},
-			},
-		},
-	}, nil
 }
 
 func main() {

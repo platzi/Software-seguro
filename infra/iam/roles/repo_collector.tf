@@ -30,8 +30,7 @@ resource "aws_iam_role_policy_attachment" "can_log" {
   policy_arn = var.log_policy_arn
 }
 
-# Needed to create vpc configuration
-resource "aws_iam_role_policy_attachment" "can_manage_network" {
+resource "aws_iam_role_policy_attachment" "can_manage_network_interfaces" {
   role       = aws_iam_role.repo_collector.name
   policy_arn = var.can_manage_network_policy_arn
 }

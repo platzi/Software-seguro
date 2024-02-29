@@ -14,9 +14,17 @@ resource "aws_lambda_function" "authorizer" {
   source_code_hash = data.aws_s3_object.authorizer.version_id
 
   vpc_config {
-    security_group_ids = var.security_group_ids
-    subnet_ids         = var.subnet_ids
+    security_group_ids = var.security_groups_ids
+    subnet_ids          = var.subnet_ids
   }
+
+  environment {
+    variables = {
+      DEMO = "DEMO"
+    }
+  }
+
+
 }
 
 output "authorizer_invoke_arn" {

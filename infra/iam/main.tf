@@ -7,7 +7,6 @@ module "roles" {
   rds_policy_arn = module.policies.can_access_rds_arn
   log_policy_arn = module.policies.can_log_arn
 
-  # For connecting to RDS
   can_manage_network_policy_arn = module.policies.can_manage_network_interfaces_arn
 }
 

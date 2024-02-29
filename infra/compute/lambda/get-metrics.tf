@@ -14,8 +14,8 @@ resource "aws_lambda_function" "get_metrics" {
   source_code_hash = data.aws_s3_object.get_metrics.version_id
 
   vpc_config {
-    security_group_ids = var.security_group_ids
-    subnet_ids         = var.subnet_ids
+    security_group_ids = var.security_groups_ids
+    subnet_ids          = var.subnet_ids
   }
 
   environment {
@@ -27,6 +27,8 @@ resource "aws_lambda_function" "get_metrics" {
       DB_NAME     = "postgres"
     }
   }
+
+
 }
 
 output "get_metrics_invoke_arn" {
