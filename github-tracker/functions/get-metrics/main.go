@@ -35,7 +35,7 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 			IsBase64Encoded: false,
 			StatusCode:      http.StatusBadRequest,
 			Body:            "missing auth_email param",
-		}, fmt.Errorf("missing path parameter: id")
+		}, fmt.Errorf("missing path parameter: email")
 	}
 
 	db, err := database.Connect(ctx)

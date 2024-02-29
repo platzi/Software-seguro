@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"github-tracker/github-tracker/database"
+	"github-tracker/github-tracker/logger"
 	"github-tracker/github-tracker/models"
 	"github-tracker/github-tracker/repository"
 	"github-tracker/github-tracker/repository/entity"
@@ -29,6 +30,9 @@ const SignaturePrefix = "sha256="
 var ErrInvalidWebhook = errors.New("invalid GitHub webhook")
 
 func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	logger := logger.NewLogger("lambda-handle-github-webhook")
+	attributes := map[string]interface{}{}
+
 	isValid, err := validateGitHubRequest(ctx, request)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
@@ -58,7 +62,8 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 		}, nil
 	}
 
-	fmt.Println("webhook: ", webhook.HeadCommit)
+	attributes["head_commit"] = webhook.HeadCommit
+	logger.Info(ctx, "valid github webhook received", attributes)
 
 	db, err := database.Connect(ctx)
 	if err != nil {
@@ -80,7 +85,7 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 		}, err
 	}
 
-	fmt.Println("commit created!")
+	logger.Info(ctx, "commit created", attributes)
 
 	return events.APIGatewayProxyResponse{
 		IsBase64Encoded: false,
