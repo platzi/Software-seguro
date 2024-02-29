@@ -44,7 +44,7 @@ func (logger *logger) Log(ctx context.Context, eventName string, level LogLevel,
 		return
 	}
 
-	fmt.Println(jsonData)
+	fmt.Println(string(jsonData))
 }
 
 func (logger *logger) Info(ctx context.Context, eventName string, attributes map[string]interface{}) {
