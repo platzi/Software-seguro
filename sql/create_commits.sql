@@ -1,0 +1,11 @@
+CREATE TABLE commits (
+    id SERIAL PRIMARY KEY,
+    repo_name VARCHAR(255) NOT NULL,
+    commit_id VARCHAR(255) UNIQUE NOT NULL,
+    commit_message VARCHAR(255) NOT NULL,
+    author_username VARCHAR(255) NOT NULL,
+    author_email VARCHAR(255) NOT NULL,
+    payload JSONB NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
