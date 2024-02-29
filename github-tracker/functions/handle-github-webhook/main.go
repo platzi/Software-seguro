@@ -50,7 +50,7 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 		}, err
 	}
 
-	fmt.Println("commit created! id")
+	fmt.Println("commit created!")
 
 	return events.APIGatewayProxyResponse{
 		IsBase64Encoded: false,
