@@ -8,14 +8,14 @@ import (
 
 type Commit interface {
 	Insert(ctx context.Context, commit *entity.Commit) (err error)
-	GetCommitByAuthorEmail(ctx context.Context, email string) (commits []entity.Commit, err error)
+	GetCommitsByAuthorEmail(ctx context.Context, email string) (commits []entity.Commit, err error)
 }
 
 type commit struct {
 	Conn *sql.DB
 }
 
-func NewCommit(conn *sql.DB) commit {
+func NewCommit(conn *sql.DB) Commit {
 	return commit{
 		Conn: conn,
 	}

@@ -10,6 +10,10 @@ import (
 	jose "github.com/go-jose/go-jose/v3"
 )
 
+const (
+	GitHubUserAgentPrefix = "GitHub-Hookshot"
+)
+
 func handler(event events.APIGatewayV2CustomAuthorizerV2Request) (events.APIGatewayCustomAuthorizerResponse, error) {
 	route := event.RouteArn
 	path := event.RequestContext.HTTP.Path
@@ -22,7 +26,16 @@ func handler(event events.APIGatewayV2CustomAuthorizerV2Request) (events.APIGate
 	fmt.Println(string(jsonData))
 
 	if path == "/commit" {
-		return allowRequest(route)
+		userAgent, ok := event.Headers["user-agent"]
+		if ok {
+			fmt.Println("user agent: ", userAgent)
+
+			if strings.HasPrefix(userAgent, GitHubUserAgentPrefix) {
+				return allowRequest(route)
+			}
+
+			return denyRequest("path /commit request not allowed")
+		}
 	}
 
 	authToken, ok := event.Headers["authorization"]
