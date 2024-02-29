@@ -40,6 +40,11 @@ resource "aws_iam_role_policy_attachment" "can_get_db_password" {
   policy_arn = var.can_get_db_password_arn
 }
 
+resource "aws_iam_role_policy_attachment" "can_access_github_secret" {
+  role       = aws_iam_role.repo_collector.name
+  policy_arn = var.can_access_github_secret_arn
+}
+
 output "repo_collector_role_arn" {
   value = aws_iam_role.repo_collector.arn
 }
